@@ -1,0 +1,13 @@
+{
+  "name": "tech-at-work",
+  "version": "1.0.0",
+  "description": "Tech@Work — AI-Led Intelligence Scrollytelling Website",
+  "private": true,
+  "scripts": {
+    "dev": "serve . -l 3000 --cors",
+    "start": "serve . -l 3000 --cors"
+  },
+  "devDependencies": {
+    "serve": "^14.2.4"
+  }
+}
