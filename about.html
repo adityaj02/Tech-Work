@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | Tech@Work</title>
+    <meta name="description" content="We are Tech@Work — a technology consultancy built for businesses that want to move faster, think smarter, and scale with intention.">
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+                "primary": "#ffafd6",
+                "background": "#131313",
+                "on-background": "#e2e2e2",
+                "surface-container-low": "#1b1b1b",
+                "outline-variant": "#514349",
+                "on-surface-variant": "#d6c1c9",
+                "primary-container": "#e38cb8",
+                "on-primary": "#57173e"
+            },
+            fontFamily: {
+                "headline": ["Space Grotesk", "sans-serif"],
+                "body": ["Inter", "sans-serif"]
+            },
+            keyframes: {
+                marquee: {
+                    '0%': { transform: 'translateX(0%)' },
+                    '100%': { transform: 'translateX(-50%)' }
+                }
+            },
+            animation: {
+                'marquee': 'marquee 20s linear infinite',
+                'marquee-reverse': 'marquee 20s linear infinite reverse'
+            }
+          }
+        }
+      }
+    </script>
+
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .grain-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 9999; opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+        .glass-card {
+            background: rgba(53, 53, 53, 0.5);
+            border: 1px solid rgba(81, 67, 73, 0.15);
+            border-radius: 0.25rem;
+        }
+        html { scroll-behavior: smooth; }
+
+        .video-bg {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 0; overflow: hidden; pointer-events: none;
+        }
+        .video-bg #lottie-bg-container {
+            width: 100%; height: 100%;
+            filter: grayscale(1); opacity: 0.30; mix-blend-mode: screen;
+            will-change: opacity; transform: scale(1.2);
+        }
+        .video-bg__overlay {
+            position: absolute; inset: 0;
+            background:
+                linear-gradient(to bottom, transparent 0%, rgba(19,19,19,0.3) 40%, rgba(19,19,19,0.85) 80%, #131313 100%),
+                linear-gradient(to right, rgba(19,19,19,0.6) 0%, transparent 50%, rgba(19,19,19,0.6) 100%);
+            pointer-events: none;
+        }
+        .video-bg__vignette {
+            position: absolute; inset: 0;
+            box-shadow: inset 0 0 200px 60px rgba(0,0,0,0.8);
+            pointer-events: none;
+        }
+
+        /* Trust strip pills */
+        .trust-pill {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 8px 18px; border-radius: 9999px;
+            background: rgba(255,175,214,0.08); border: 1px solid rgba(255,175,214,0.2);
+            font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.1em; color: #ffafd6;
+            transition: background 0.2s ease, border-color 0.2s ease;
+        }
+        .trust-pill:hover {
+            background: rgba(255,175,214,0.15); border-color: rgba(255,175,214,0.4);
+        }
+
+        /* Neon connector for How It Works */
+        .neon-line {
+            position: absolute; top: 50px; left: 0; right: 0; height: 2px;
+            background: rgba(255,175,214,0.15); z-index: 0;
+        }
+        .neon-line::after {
+            content: ''; position: absolute; top: 0; left: 0; height: 100%;
+            width: 0; background: linear-gradient(90deg, #ffafd6, #e38cb8);
+            transition: width 1s ease-out;
+        }
+        .neon-line.active::after { width: 100%; }
+
+        .glow-node {
+            width: 16px; height: 16px; border-radius: 50%;
+            background: #ffafd6; box-shadow: 0 0 12px rgba(255,175,214,0.4);
+            position: relative; z-index: 2;
+        }
+
+        /* Service card bullets */
+        .service-bullets li {
+            position: relative; padding-left: 16px;
+            font-size: 0.85rem; color: #d6c1c9; margin-bottom: 6px;
+        }
+        .service-bullets li::before {
+            content: ''; position: absolute; left: 0; top: 8px;
+            width: 6px; height: 6px; border-radius: 50%;
+            background: #ffafd6;
+        }
+
+        /* Card hover tilt */
+        .tilt-card {
+            transition: transform 0.25s ease, border-color 0.25s ease;
+        }
+        .tilt-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255,175,214,0.3);
+        }
+
+        /* Button glow */
+        .btn-glow {
+            position: relative;
+            transition: opacity 0.2s ease;
+        }
+        .btn-glow:hover { opacity: 0.9; }
+
+        /* Scroll reveal */
+        .scroll-reveal {
+            opacity: 0; transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .scroll-reveal.revealed { opacity: 1; transform: translateY(0); }
+        .scroll-reveal.revealed[data-delay="1"] { transition-delay: 100ms; }
+        .scroll-reveal.revealed[data-delay="2"] { transition-delay: 200ms; }
+        .scroll-reveal.revealed[data-delay="3"] { transition-delay: 300ms; }
+        .scroll-reveal.revealed[data-delay="4"] { transition-delay: 400ms; }
+
+        /* BlurText animation */
+        [data-blur-text] .blur-word {
+            display: inline-block;
+            opacity: 0;
+            filter: blur(10px);
+            transform: translateY(var(--blur-dir, -30px));
+            transition: opacity var(--blur-step, 0.8s) cubic-bezier(0.16, 1, 0.3, 1),
+                        filter var(--blur-step, 0.8s) cubic-bezier(0.16, 1, 0.3, 1),
+                        transform var(--blur-step, 0.8s) cubic-bezier(0.16, 1, 0.3, 1);
+            transition-delay: var(--blur-delay, 0s);
+        }
+        [data-blur-text].blur-active .blur-word {
+            opacity: 1;
+            filter: blur(0px);
+            transform: translateY(0);
+        }
+
+        /* Dock Component */
+        .dock-outer {
+            display: flex;
+            align-items: center;
+            margin: 0 1rem;
+        }
+        .dock-panel {
+            display: flex;
+            align-items: flex-start;
+            width: fit-content;
+            gap: 0.75rem;
+            padding: 0.5rem;
+            border-radius: 1rem;
+            background-color: rgba(18, 15, 23, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+        }
+        .dock-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background-color: rgba(53, 53, 53, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #a1a1aa;
+            cursor: pointer;
+            width: 44px;
+            height: 44px;
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s, background-color 0.2s;
+            will-change: transform;
+        }
+        .dock-item:hover {
+            color: #ffafd6;
+            background-color: rgba(53, 53, 53, 0.6);
+            transform: scale(1.25) translateY(-4px);
+            z-index: 10;
+        }
+        .dock-icon .material-symbols-outlined {
+            font-size: 22px;
+        }
+        .dock-label {
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px) scale(0.8);
+            opacity: 0;
+            width: fit-content;
+            white-space: nowrap;
+            background-color: rgba(18, 15, 23, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            pointer-events: none;
+            transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+            z-index: 20;
+        }
+        .dock-item:hover .dock-label {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0) scale(0.8);
+        }
+
+        /* Mobile menu */
+        .mobile-nav-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+            z-index: 998; opacity: 0; visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .mobile-nav-overlay.open { opacity: 1; visibility: visible; }
+        .mobile-nav-panel {
+            position: fixed; top: 0; right: 0; bottom: 0;
+            width: 80%; max-width: 320px; background: #1b1b1b;
+            border-left: 1px solid rgba(81,67,73,0.3);
+            z-index: 999; transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+            padding: 2rem 1.5rem;
+        }
+        .mobile-nav-panel.open { transform: translateX(0); }
+
+        /* Paragraph max width */
+        .readable { max-width: 65ch; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-primary selection:text-on-primary">
+    <div class="grain-overlay"></div>
+
+    <!-- Fixed Background Lottie -->
+    <div class="video-bg" id="video-bg">
+        <div id="lottie-bg-container"></div>
+        <div class="video-bg__overlay"></div>
+        <div class="video-bg__vignette"></div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-nav-overlay" id="mobile-overlay"></div>
+    <div class="mobile-nav-panel" id="mobile-panel">
+        <div class="flex justify-end mb-8">
+            <button id="mobile-close" class="text-zinc-400 hover:text-primary transition-colors">
+                <span class="material-symbols-outlined text-3xl">close</span>
+            </button>
+        </div>
+        <div class="flex flex-col gap-6">
+            <a href="index.html" class="text-xl font-headline font-bold uppercase tracking-wider text-zinc-200 hover:text-primary transition-colors mobile-link">Home</a>
+            <a href="services.html" class="text-xl font-headline font-bold uppercase tracking-wider text-zinc-200 hover:text-primary transition-colors mobile-link">Services</a>
+            <a href="case-studies.html" class="text-xl font-headline font-bold uppercase tracking-wider text-zinc-200 hover:text-primary transition-colors mobile-link">Case Studies</a>
+            <a href="about.html" class="text-xl font-headline font-bold uppercase tracking-wider text-primary transition-colors mobile-link">About Us</a>
+            <a href="contact.html" class="text-xl font-headline font-bold uppercase tracking-wider text-zinc-200 hover:text-primary transition-colors mobile-link">Contact</a>
+            <a href="contact.html" class="mt-4 bg-gradient-to-br from-primary to-primary-container text-on-primary px-6 py-3 font-headline font-bold uppercase tracking-wider text-center btn-glow rounded-lg mobile-link">Book Consultation</a>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 w-full z-50 bg-zinc-950/80 backdrop-blur-[12px] border-b border-white/5 transition-all duration-300" id="navbar">
+        <div class="flex justify-between items-center w-full px-6 py-5 md:px-12 max-w-[1600px] mx-auto">
+            <a href="index.html" class="text-2xl font-black tracking-tighter text-zinc-100 font-headline uppercase">Tech<span class="text-primary">@Work</span></a>
+            <div class="hidden md:flex gap-6 items-center">
+                <div class="dock-outer">
+                    <div class="dock-panel">
+                        <a href="index.html" class="dock-item">
+                            <span class="dock-icon"><span class="material-symbols-outlined">home</span></span>
+                            <div class="dock-label">Home</div>
+                        </a>
+                        <a href="services.html" class="dock-item">
+                            <span class="dock-icon"><span class="material-symbols-outlined">design_services</span></span>
+                            <div class="dock-label">Services</div>
+                        </a>
+                        <a href="case-studies.html" class="dock-item">
+                            <span class="dock-icon"><span class="material-symbols-outlined">work</span></span>
+                            <div class="dock-label">Case Studies</div>
+                        </a>
+                        <a href="about.html" class="dock-item" style="color: #ffafd6; background-color: rgba(53, 53, 53, 0.6);">
+                            <span class="dock-icon"><span class="material-symbols-outlined">info</span></span>
+                            <div class="dock-label">About Us</div>
+                        </a>
+                        <a href="contact.html" class="dock-item">
+                            <span class="dock-icon"><span class="material-symbols-outlined">mail</span></span>
+                            <div class="dock-label">Contact</div>
+                        </a>
+                    </div>
+                </div>
+                <a href="contact.html" class="bg-gradient-to-br from-primary to-primary-container text-on-primary px-6 py-2 font-headline font-bold uppercase tracking-wider hover:opacity-90 transition-opacity btn-glow rounded-lg">
+                    Book Consultation
+                </a>
+            </div>
+            <button class="md:hidden text-primary" id="mobile-toggle">
+                <span class="material-symbols-outlined text-3xl">menu</span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="pt-32 pb-32 relative z-[1]">
+        <!-- ===== HERO SECTION ===== -->
+        <section class="relative px-6 md:px-12 max-w-7xl mx-auto mb-32 flex flex-col justify-center min-h-[60vh]">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[150px] pointer-events-none"></div>
+            
+            <div class="relative z-10 text-center max-w-4xl mx-auto scroll-reveal">
+                <div class="inline-block px-4 py-2 bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest rounded-full mb-8" style="font-family: 'Space Grotesk', sans-serif;">
+                    About Us
+                </div>
+                <h1 class="font-headline font-black text-5xl md:text-[5rem] leading-[1.1] tracking-tighter uppercase mb-8" data-blur-text data-blur-delay="100">
+                    Precision-Engineered<br/><span class="text-primary">Digital Solutions</span>
+                </h1>
+                <p class="text-lg md:text-xl text-on-surface-variant leading-relaxed font-light readable mx-auto mb-10">
+                    We are Tech@Work — a technology consultancy built for businesses that want to move faster, think smarter, and scale with intention.
+                </p>
+                <a href="contact.html" class="bg-gradient-to-br from-primary to-primary-container text-on-primary font-headline font-bold py-4 px-10 uppercase tracking-wider inline-flex items-center text-sm btn-glow rounded-lg transition-transform hover:scale-105">
+                    Book a Consultancy Call <span class="material-symbols-outlined ml-2 text-lg">arrow_forward</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- ===== MISSION SECTION ===== -->
+        <section class="px-6 md:px-12 max-w-7xl mx-auto space-y-8 mb-[120px]">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="scroll-reveal">
+                    <h3 class="text-primary font-headline font-bold tracking-widest uppercase text-sm mb-4">Our Mission</h3>
+                    <h2 class="font-headline font-black text-4xl md:text-5xl uppercase tracking-tighter leading-[1.2] mb-6">
+                        We build intelligent systems that drive <span class="text-zinc-500">measurable outcomes.</span>
+                    </h2>
+                    <p class="text-lg text-on-surface-variant leading-relaxed font-light readable mb-6">
+                        In a landscape flooded with generic tools and theoretical advice, we focus on execution. Our mission is to bridge the gap between complex technology and tangible business growth.
+                    </p>
+                    <p class="text-lg text-on-surface-variant leading-relaxed font-light readable">
+                        Whether it's deploying private AI models that protect your data, building enterprise-grade platforms, or engineering data-driven marketing campaigns, every solution we deliver is designed with precision and purpose.
+                    </p>
+                </div>
+                
+                <div class="glass-card p-10 relative overflow-hidden tilt-card scroll-reveal" data-delay="1">
+                    <div class="absolute -right-20 -bottom-20 w-64 h-64 bg-[#becc9a]/10 rounded-full blur-[60px]"></div>
+                    <div class="grid grid-cols-2 gap-8 relative z-10">
+                        <div>
+                            <div class="font-headline font-black text-4xl text-primary mb-2">50+</div>
+                            <div class="text-xs font-headline uppercase tracking-widest text-zinc-500">Projects Delivered</div>
+                        </div>
+                        <div>
+                            <div class="font-headline font-black text-4xl text-[#becc9a] mb-2">20+</div>
+                            <div class="text-xs font-headline uppercase tracking-widest text-zinc-500">Industries Served</div>
+                        </div>
+                        <div>
+                            <div class="font-headline font-black text-4xl text-[#e38cb8] mb-2">95%</div>
+                            <div class="text-xs font-headline uppercase tracking-widest text-zinc-500">Client Retention</div>
+                        </div>
+                        <div>
+                            <div class="font-headline font-black text-4xl text-zinc-300 mb-2">&lt;2wk</div>
+                            <div class="text-xs font-headline uppercase tracking-widest text-zinc-500">Avg. Deployment</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== VALUES ===== -->
+        <section class="px-6 md:px-12 max-w-7xl mx-auto mb-[120px]">
+            <div class="mb-12 scroll-reveal text-center">
+                <h3 class="text-primary font-headline font-bold tracking-widest uppercase text-sm mb-4">Our DNA</h3>
+                <h2 class="font-headline font-black text-4xl md:text-5xl uppercase tracking-tighter mb-4" data-blur-text data-blur-delay="150">
+                    Core <span class="text-zinc-500">Values</span>
+                </h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass-card p-8 bg-[#1B1B1B] border-l-4 border-l-primary tilt-card scroll-reveal">
+                    <h3 class="font-headline font-bold uppercase tracking-widest text-lg mb-4 text-zinc-100" style="letter-spacing: 0.1em;">Business-First</h3>
+                    <p class="text-zinc-400 text-sm leading-relaxed font-light">Every decision, line of code, and architectural choice is tied directly to commercial outcomes and business growth.</p>
+                </div>
+                <div class="glass-card p-8 bg-[#1B1B1B] border-l-4 border-l-[#becc9a] tilt-card scroll-reveal" data-delay="1">
+                    <h3 class="font-headline font-bold uppercase tracking-widest text-lg mb-4 text-zinc-100" style="letter-spacing: 0.1em;">Data-Driven</h3>
+                    <p class="text-zinc-400 text-sm leading-relaxed font-light">We let numbers guide strategy, not assumptions. Rigorous analytics form the foundation of our execution.</p>
+                </div>
+                <div class="glass-card p-8 bg-[#1B1B1B] border-l-4 border-l-[#e38cb8] tilt-card scroll-reveal" data-delay="2">
+                    <h3 class="font-headline font-bold uppercase tracking-widest text-lg mb-4 text-zinc-100" style="letter-spacing: 0.1em;">AI-Powered</h3>
+                    <p class="text-zinc-400 text-sm leading-relaxed font-light">We integrate cutting-edge artificial intelligence into every solution, ensuring you stay ahead of the technology curve.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== TEAM / EXPERTISE MARQUEE ===== -->
+        <section class="py-20 bg-zinc-950 border-y border-white/5 mb-[120px] overflow-hidden relative">
+            <div class="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background z-10 pointer-events-none"></div>
+            <div class="flex whitespace-nowrap animate-marquee items-center mb-16">
+                <div class="flex items-center justify-around min-w-[200%] gap-12 text-5xl font-headline font-black uppercase tracking-tighter text-zinc-800">
+                    <span class="hover:text-zinc-600 transition-colors">AI Engineering</span><span class="text-primary text-2xl">◆</span>
+                    <span class="hover:text-zinc-600 transition-colors">Data Science</span><span class="text-[#becc9a] text-2xl">◆</span>
+                    <span class="hover:text-zinc-600 transition-colors">Web Architecture</span><span class="text-primary text-2xl">◆</span>
+                    <span class="hover:text-zinc-600 transition-colors">Performance Marketing</span><span class="text-[#becc9a] text-2xl">◆</span>
+                    <span class="hover:text-zinc-600 transition-colors">Business Strategy</span><span class="text-primary text-2xl">◆</span>
+                    <span class="hover:text-zinc-600 transition-colors">AI Engineering</span><span class="text-primary text-2xl">◆</span>
+                    <span class="hover:text-zinc-600 transition-colors">Data Science</span><span class="text-[#becc9a] text-2xl">◆</span>
+                    <span class="hover:text-zinc-600 transition-colors">Web Architecture</span><span class="text-primary text-2xl">◆</span>
+                    <span class="hover:text-zinc-600 transition-colors">Performance Marketing</span><span class="text-[#becc9a] text-2xl">◆</span>
+                    <span class="hover:text-zinc-600 transition-colors">Business Strategy</span><span class="text-primary text-2xl">◆</span>
+                </div>
+            </div>
+            
+            <div class="max-w-4xl mx-auto px-6 text-center scroll-reveal relative z-20">
+                <p class="text-xl md:text-2xl text-zinc-300 leading-relaxed font-light readable mx-auto">
+                    Our team combines deep technical expertise in artificial intelligence, web engineering, and data science with strategic business acumen to deliver solutions that actually work.
+                </p>
+            </div>
+        </section>
+
+        <!-- ===== CTA SECTION ===== -->
+        <section class="px-6 md:px-12 max-w-5xl mx-auto text-center relative scroll-reveal mb-12">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
+            
+            <div class="relative z-10 glass-card p-12 md:p-20 bg-[#1B1B1B]/80 backdrop-blur-sm border-white/10">
+                <h2 class="font-headline font-black text-4xl md:text-6xl uppercase tracking-tighter mb-6">
+                    Ready to Transform<br/><span class="text-primary">Your Business?</span>
+                </h2>
+                <p class="text-lg text-zinc-400 font-light mb-10 max-w-2xl mx-auto">
+                    Book a free strategy call to discuss your business challenges and explore how our intelligent digital solutions can drive your growth.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                    <a href="contact.html" class="w-full sm:w-auto bg-gradient-to-br from-primary to-primary-container text-on-primary font-headline font-bold py-4 px-8 uppercase tracking-wider text-sm btn-glow rounded-lg">
+                        Book Free Consultancy Call
+                    </a>
+                    <a href="services.html" class="w-full sm:w-auto border border-outline-variant text-zinc-100 font-headline font-bold py-4 px-8 uppercase tracking-wider hover:bg-white/5 hover:border-primary/50 transition-all text-sm rounded-lg">
+                        View Our Services
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===== FOOTER (Matches Index) ===== -->
+    <footer class="w-full py-16 px-6 border-t border-white/10 bg-zinc-950 mt-12">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+            <div class="md:col-span-1">
+                <div class="font-headline text-2xl font-black text-zinc-100 uppercase tracking-tighter mb-4">TECH<span class="text-primary">@WORK</span></div>
+                <p class="text-zinc-500 text-sm leading-relaxed font-light pr-4 mb-6">
+                    Engineering intelligent digital solutions — from AI-powered web platforms to local LLM deployment and growth automation.
+                </p>
+                <div class="flex flex-col gap-3">
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=shivskukreja@gmail.com&su=Tech%40Work%20Inquiry" target="_blank" class="inline-flex items-center gap-2 text-zinc-400 hover:text-primary transition-colors text-sm">
+                        <span class="material-symbols-outlined text-lg">mail</span> shivskukreja@gmail.com
+                    </a>
+                    <a href="tel:+919811797407" class="inline-flex items-center gap-2 text-zinc-400 hover:text-[#25D366] transition-colors text-sm">
+                        <span class="material-symbols-outlined text-lg">call</span> +91 98117 97407
+                    </a>
+                </div>
+            </div>
+            <div>
+                <h4 class="font-headline font-bold uppercase tracking-widest text-zinc-100 text-xs mb-6">Services</h4>
+                <div class="flex flex-col gap-4">
+                    <a href="services.html" class="text-zinc-500 font-body text-sm hover:text-primary transition-colors">Web Development</a>
+                    <a href="services.html" class="text-zinc-500 font-body text-sm hover:text-primary transition-colors">AI Automation</a>
+                    <a href="services.html" class="text-zinc-500 font-body text-sm hover:text-primary transition-colors">Market Intelligence</a>
+                    <a href="services.html" class="text-zinc-500 font-body text-sm hover:text-primary transition-colors">Performance Marketing</a>
+                    <a href="services.html" class="text-zinc-500 font-body text-sm hover:text-primary transition-colors">Consulting</a>
+                </div>
+            </div>
+            <div>
+                <h4 class="font-headline font-bold uppercase tracking-widest text-zinc-100 text-xs mb-6">Company</h4>
+                <div class="flex flex-col gap-4">
+                    <a href="about.html" class="text-zinc-500 font-body text-sm hover:text-primary transition-colors">About Us</a>
+                    <a href="case-studies.html" class="text-zinc-500 font-body text-sm hover:text-primary transition-colors">Case Studies</a>
+                    <a href="about.html#how-it-works" class="text-zinc-500 font-body text-sm hover:text-primary transition-colors">Our Process</a>
+                    <a href="contact.html" class="text-zinc-500 font-body text-sm hover:text-primary transition-colors">Contact</a>
+                </div>
+            </div>
+            <div>
+                <h4 class="font-headline font-bold uppercase tracking-widest text-zinc-100 text-xs mb-6">Solutions</h4>
+                <div class="flex flex-col gap-4">
+                    <a href="services.html#ai-infra" class="text-zinc-500 font-body text-sm hover:text-primary transition-colors">AI Infrastructure</a>
+                    <a href="services.html" class="text-zinc-500 font-body text-sm hover:text-primary transition-colors">Local LLM Deployment</a>
+                    <a href="services.html" class="text-zinc-500 font-body text-sm hover:text-primary transition-colors">Enterprise Dashboards</a>
+                    <a href="about.html#how-it-works" class="text-zinc-500 font-body text-sm hover:text-primary transition-colors">Our Process</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 pt-8 border-t border-white/5">
+            <div class="text-zinc-600 font-body text-xs uppercase tracking-widest">
+                &copy; 2026 TECH@WORK. ALL RIGHTS RESERVED.
+            </div>
+            <div class="flex gap-4">
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=shivskukreja@gmail.com&su=Tech%40Work%20Inquiry" target="_blank" class="w-9 h-9 flex items-center justify-center rounded-full border border-white/10 text-zinc-500 hover:text-primary hover:border-primary/50 transition-all">
+                    <span class="material-symbols-outlined text-lg">mail</span>
+                </a>
+                <a href="tel:+919811797407" class="w-9 h-9 flex items-center justify-center rounded-full border border-white/10 text-zinc-500 hover:text-[#25D366] hover:border-[#25D366]/50 transition-all">
+                    <span class="material-symbols-outlined text-lg">call</span>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script>
+    (function() {
+        // Scroll reveal animations
+        const revealEls = document.querySelectorAll('.scroll-reveal');
+        if (revealEls.length) {
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                        revealObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+            revealEls.forEach(el => revealObserver.observe(el));
+        }
+
+        // Neon timeline line activation
+        const timelineGrid = document.getElementById('timeline-grid');
+        const timelineLine = document.getElementById('timeline-line');
+        if (timelineGrid && timelineLine) {
+            const tlObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        timelineLine.classList.add('active');
+                        tlObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.3 });
+            tlObserver.observe(timelineGrid);
+        }
+
+        // Mobile menu toggle
+        const mobileToggle = document.getElementById('mobile-toggle');
+        const mobileClose = document.getElementById('mobile-close');
+        const mobileOverlay = document.getElementById('mobile-overlay');
+        const mobilePanel = document.getElementById('mobile-panel');
+        function openMobile() {
+            mobilePanel && mobilePanel.classList.add('open');
+            mobileOverlay && mobileOverlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeMobile() {
+            mobilePanel && mobilePanel.classList.remove('open');
+            mobileOverlay && mobileOverlay.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+        mobileToggle && mobileToggle.addEventListener('click', openMobile);
+        mobileClose && mobileClose.addEventListener('click', closeMobile);
+        mobileOverlay && mobileOverlay.addEventListener('click', closeMobile);
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', closeMobile);
+        });
+
+        // Navbar scroll behavior
+        const navbar = document.getElementById('navbar');
+        let lastScrollY = 0;
+        if (navbar) {
+            window.addEventListener('scroll', function() {
+                const currentY = window.scrollY;
+                if (currentY > 100) {
+                    navbar.style.background = 'rgba(19,19,19,0.95)';
+                    navbar.style.paddingBlock = '12px';
+                } else {
+                    navbar.style.background = 'rgba(19,19,19,0.8)';
+                    navbar.style.paddingBlock = '';
+                }
+                if (currentY > 600) {
+                    if (currentY > lastScrollY + 5) navbar.style.transform = 'translateY(-100%)';
+                    else if (currentY < lastScrollY - 5) navbar.style.transform = 'translateY(0)';
+                } else {
+                    navbar.style.transform = 'translateY(0)';
+                }
+                lastScrollY = currentY;
+            }, { passive: true });
+        }
+
+        // BlurText animation
+        (function initBlurText() {
+            var blurEls = document.querySelectorAll('[data-blur-text]');
+            if (!blurEls.length) return;
+
+            blurEls.forEach(function(el) {
+                var delay = parseInt(el.dataset.blurDelay, 10) || 150;
+                var direction = el.dataset.blurDirection || 'top';
+                var stepDuration = parseFloat(el.dataset.blurStep) || 0.35;
+                var dirY = direction === 'top' ? '-30px' : '30px';
+
+                var wordIndex = 0;
+                var fragment = document.createDocumentFragment();
+
+                function processNode(node) {
+                    if (node.nodeType === 3) {
+                        var words = node.textContent.split(/\s+/).filter(function(w) { return w.length > 0; });
+                        words.forEach(function(word, i) {
+                            var span = document.createElement('span');
+                            span.className = 'blur-word';
+                            span.textContent = word;
+                            span.style.setProperty('--blur-delay', (wordIndex * delay / 1000) + 's');
+                            span.style.setProperty('--blur-dir', dirY);
+                            span.style.setProperty('--blur-step', stepDuration + 's');
+                            fragment.appendChild(span);
+                            wordIndex++;
+                            if (i < words.length - 1 || node.nextSibling) {
+                                fragment.appendChild(document.createTextNode('\u00A0'));
+                            }
+                        });
+                    } else if (node.nodeType === 1) {
+                        if (node.tagName === 'BR') {
+                            fragment.appendChild(node.cloneNode());
+                        } else {
+                            var clone = node.cloneNode(false);
+                            var innerWords = node.textContent.split(/\s+/).filter(function(w) { return w.length > 0; });
+                            innerWords.forEach(function(word, i) {
+                                var span = document.createElement('span');
+                                span.className = 'blur-word';
+                                span.textContent = word;
+                                span.style.setProperty('--blur-delay', (wordIndex * delay / 1000) + 's');
+                                span.style.setProperty('--blur-dir', dirY);
+                                span.style.setProperty('--blur-step', stepDuration + 's');
+                                clone.appendChild(span);
+                                wordIndex++;
+                                if (i < innerWords.length - 1) {
+                                    clone.appendChild(document.createTextNode('\u00A0'));
+                                }
+                            });
+                            fragment.appendChild(clone);
+                            fragment.appendChild(document.createTextNode('\u00A0'));
+                        }
+                    }
+                }
+
+                var childNodes = Array.prototype.slice.call(el.childNodes);
+                childNodes.forEach(processNode);
+                el.innerHTML = '';
+                el.appendChild(fragment);
+            });
+
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('blur-active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+            blurEls.forEach(function(el) { observer.observe(el); });
+        })();
+    })();
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
+    <script>
+        var lottieBgContainer = document.getElementById('lottie-bg-container');
+        if (lottieBgContainer) {
+            lottie.loadAnimation({
+                container: lottieBgContainer,
+                renderer: 'svg',
+                loop: true,
+                autoplay: true,
+                path: 'assets/e112727e-1165-11ee-85d3-3bec6d5d3082.json',
+                rendererSettings: {
+                    preserveAspectRatio: 'xMidYMid slice'
+                }
+            });
+        }
+
+        const videoBg = document.getElementById('video-bg');
+        if (videoBg) {
+            let ticking = false;
+            function onVideoScroll() {
+                if (!ticking) {
+                    requestAnimationFrame(function() {
+                        const scrollY = window.scrollY;
+                        const fadeEnd = window.innerHeight * 1.5;
+                        const opacity = Math.max(0, 1 - scrollY / fadeEnd);
+                        videoBg.style.opacity = opacity;
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }
+            window.addEventListener('scroll', onVideoScroll, { passive: true });
+            onVideoScroll();
+        }
+    </script>
+    <script src="splash-cursor.js"></script>
+</body>
+</html>

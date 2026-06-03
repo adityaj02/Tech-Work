@@ -1,6 +1,7 @@
 {
   "name": "tech-at-work",
   "version": "1.0.0",
+  "type": "module",
   "description": "Tech@Work — AI-Led Intelligence Scrollytelling Website",
   "private": true,
   "scripts": {
@@ -9,5 +10,8 @@
   },
   "devDependencies": {
     "serve": "^14.2.4"
+  },
+  "dependencies": {
+    "resend": "^6.12.4"
   }
 }
