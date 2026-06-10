@@ -5,11 +5,20 @@
   "description": "Tech@Work — AI-Led Intelligence Scrollytelling Website",
   "private": true,
   "scripts": {
-    "dev": "serve . -l 3000 --cors",
-    "start": "serve . -l 3000 --cors"
+    "dev": "concurrently \"npm run tailwind:watch\" \"npm run serve\"",
+    "build": "npm run tailwind:build",
+    "tailwind:build": "tailwindcss -i css/input.css -o css/output.css",
+    "tailwind:watch": "tailwindcss -i css/input.css -o css/output.css --watch",
+    "serve": "serve . -l 3000 --cors"
   },
   "devDependencies": {
-    "serve": "^14.2.4"
+    "@tailwindcss/container-queries": "^0.1.1",
+    "@tailwindcss/forms": "^0.5.11",
+    "autoprefixer": "^10.5.0",
+    "concurrently": "^10.0.3",
+    "postcss": "^8.5.15",
+    "serve": "^14.2.4",
+    "tailwindcss": "^3.4.19"
   },
   "dependencies": {
     "resend": "^6.12.4"
