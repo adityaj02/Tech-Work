@@ -18,12 +18,13 @@ const copyRecursiveSync = (src, dest) => {
   }
 };
 
-const itemsToCopy = ['assets', 'css', 'js', 'splash-cursor.js'];
+const itemsToCopy = ['assets', 'css', 'js', 'api', 'splash-cursor.js'];
 
 // Copy specific items
 itemsToCopy.forEach(item => {
   if (fs.existsSync(item)) {
     copyRecursiveSync(item, path.join(outDir, item));
+    console.log(`Copied: ${item}`);
   }
 });
 
@@ -31,6 +32,7 @@ itemsToCopy.forEach(item => {
 fs.readdirSync('.').forEach(file => {
   if (file.endsWith('.html')) {
     fs.copyFileSync(file, path.join(outDir, file));
+    console.log(`Copied: ${file}`);
   }
 });
 
